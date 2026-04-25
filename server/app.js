@@ -7,14 +7,8 @@ const path = require("path");
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://user-system-silk.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(cors());
+app.options(/.*/, cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
