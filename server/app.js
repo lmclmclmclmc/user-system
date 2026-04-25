@@ -1,34 +1,44 @@
-const express =require("express")
-const cors=require("cors");
+const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
-const db=require("./config/db")
-const userRoutes=require("./routes/userRoutes");
-const path=require("path")
+const db = require("./config/db");
+const userRoutes = require("./routes/userRoutes");
+const path = require("path");
 
-const app=express();
-app.use(cors());
+const app = express();
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://user-system-silk.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use("/uploads",express.static(path.join(__dirname,"uploads")))
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/api/users",userRoutes);
+app.use("/api/users", userRoutes);
 
-app.get("/",(req,res)=>{
-    res.send("good")
-})
+app.get("/", (req, res) => {
+  res.send("good");
+});
 
-app.get("/test-db",(req,res)=>{
-    db.query("SELECT 1",(err,results)=>{
-        if(err){
-            return res.status(500).json({message:"db faliue",error:err.message}
-                
-            )
-        }
-        res.json({message:"数据库连接成功",results});
-    })
-})
+app.get("/test-db", (req, res) => {
+  db.query("SELECT 1", (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        message: "db faliue",
+        error: err.message
+      });
+    }
+    res.json({ message: "数据库连接成功", results });
+  });
+});
 
-const PORT=process.env.PORT || 3000;
-app.listen(PORT,()=>{
-    console.log(`server is running at http://localhost:${PORT}`);
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`server is running at http://localhost:${PORT}`);
+});
