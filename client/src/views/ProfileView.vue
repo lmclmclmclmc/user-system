@@ -12,7 +12,18 @@ import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
+const BACKEND_URL = 'https://user-system-production.up.railway.app'
 
+const getAvatarUrl = (avatar) => {
+  if (!avatar) return ''
+  if (avatar.startsWith('http://') || avatar.startsWith('https://')) {
+    return avatar
+  }
+  if (avatar.startsWith('/uploads/')) {
+    return `${BACKEND_URL}${avatar}`
+  }
+  return avatar
+}
 const form = reactive({
   username: '',
   nickname: '',
@@ -266,7 +277,7 @@ onMounted(() => {
       <p>这里可以查看并修改你的个人资料。</p>
 
       <div class="avatar-box">
-        <img v-if="form.avatar" :src="form.avatar" alt="avatar" />
+        <img v-if="form.avatar" :src="getAvatarUrl(form.avatar)" alt="avatar" />
         <div v-else class="avatar-placeholder">暂无头像</div>
       </div>
 

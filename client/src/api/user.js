@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const request=axios.create({
-  baseURL:'/api/users',
-  timeout:5000,
+const request = axios.create({
+  baseURL: 'https://user-system-production.up.railway.app/api/users',
+  timeout: 10000
 })
 
 request.interceptors.request.use(
